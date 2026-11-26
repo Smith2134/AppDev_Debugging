@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">AppDev_Debugging</string>
+    <string name="home_welcome">Welcome, %1$s!</string>
+    <string name="home_email">Logged in as: %1$s</string>
+    <string name="action_logout">Log Out</string>
+    <string name="login_title">Sign In</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="remember_me">Remember me</string>
+    <string name="action_login">Sign In</string>
+    <string name="go_to_register">Don\'t have an account? Register</string>
+    <string name="demo_hint">Demo account: %1$s / %2$s</string>
+    <string name="welcome_toast">Welcome, %1$s!</string>
+    <string name="register_title">Create Account</string>
+    <string name="hint_full_name">Full Name</string>
+    <string name="password_rules">At least 8 characters, with letters and numbers</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="action_register">Register</string>
+    <string name="go_to_login">Already have an account? Sign In</string>
+    <string name="register_success">Registration successful!</string>
+</resources>
