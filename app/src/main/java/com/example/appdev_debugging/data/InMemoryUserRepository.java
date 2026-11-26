@@ -30,6 +30,17 @@ public class InMemoryUserRepository implements UserRepository {
         return true;
     }
 
+    @Override
+    public synchronized boolean remove(String email) {
+        if (email == null) return false;
+        return usersByEmail.remove(normalize(email)) != null;
+    }
+
+    @Override
+    public synchronized void clearAll() {
+        usersByEmail.clear();
+    }
+
     private static String normalize(String email) {
         return email.trim().toLowerCase(Locale.ROOT);
     }

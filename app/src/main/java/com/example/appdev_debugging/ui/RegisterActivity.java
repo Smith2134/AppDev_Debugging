@@ -69,6 +69,10 @@ public class RegisterActivity extends AppCompatActivity{
     //       Read the failing test's name and message. Which test fails, and what does it tell you?
     //    c) Test your guess quickly in an online regex tester or a tiny JUnit test before fixing.
     //    d) Fix it, re-run the tests until they pass, and explain what part of the rule was wrong.
+    //  ANSWER:
+    //    a) Email validity is checked by Validator.validateEmail() using EMAIL_PATTERN.
+    //    b) Unit test failure: Regex used \\.[A-Za-z]{3,}$ requiring 3+ character TLDs, failing 2-letter TLDs like .ph or .uk.
+    //    c & d) Fix: Changed TLD quantifier to \\.[A-Za-z]{2,}$ (or \\.com for .com-only restriction).
     //
     // TODO(DEBUG #4): Weak passwords are being accepted.
     //  The helper text promises "At least 8 characters, with letters and numbers".
@@ -81,6 +85,13 @@ public class RegisterActivity extends AppCompatActivity{
     //    b) Make a truth table for hasLetter / hasDigit (4 rows). For each row, write what the
     //       rule SHOULD return and what the code ACTUALLY returns.
     //    c) Fix the condition. Confirm with the unit tests (one of them should be failing right now).
+    //  ANSWER:
+    //    a & b) Truth table for (!hasLetter && !hasDigit):
+    //       - hasLetter=false, hasDigit=false -> Rejected (Correct)
+    //       - hasLetter=true,  hasDigit=false (abcdefgh) -> Accepted (Bug! Code evaluated to false)
+    //       - hasLetter=false, hasDigit=true  (12345678) -> Accepted (Bug! Code evaluated to false)
+    //       - hasLetter=true,  hasDigit=true  (abcd1234) -> Accepted (Correct)
+    //    c) Fix: Changed condition in Validator.java to (!hasLetter || !hasDigit).
     private void attemptRegister() {
         clearErrors();
 

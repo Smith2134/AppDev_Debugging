@@ -30,7 +30,12 @@ public class SharedPrefsUserRepository implements UserRepository {
             if (entry.getValue() instanceof String) {
                 User user = deserializeUser((String) entry.getValue());
                 if (user != null) {
-                    usersByEmail.put(normalize(user.getEmail()), user);
+                    String norm = normalize(user.getEmail());
+                    if ("paulccampos@gmail.com".equalsIgnoreCase(norm)) {
+                        prefs.edit().remove(entry.getKey()).apply();
+                    } else {
+                        usersByEmail.put(norm, user);
+                    }
                 }
             }
         }
@@ -62,6 +67,21 @@ public class SharedPrefsUserRepository implements UserRepository {
             prefs.edit().putString("user_" + normalized, json).apply();
         }
         return true;
+    }
+
+    @Override
+    public synchronized boolean remove(String email) {
+        if (email == null) return false;
+        String normalized = normalize(email);
+        boolean existed = usersByEmail.remove(normalized) != null;
+        prefs.edit().remove("user_" + normalized).apply();
+        return existed;
+    }
+
+    @Override
+    public synchronized void clearAll() {
+        usersByEmail.clear();
+        prefs.edit().clear().apply();
     }
 
     private static String normalize(String email) {

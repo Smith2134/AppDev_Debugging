@@ -53,6 +53,15 @@ public class HomeActivity extends AppCompatActivity{
         //       before login, after login, and after logout. What do you see?
         //    c) Find and fix the root cause. Do NOT fix it by adding extra code here in HomeActivity;
         //       fix the class that is actually responsible for the session.
+        //  ANSWER:
+        //    a) When "Remember me" was checked, the session was saved to disk in SharedPreferences (session_prefs.xml).
+        //       SessionManager.logout() only cleared currentEmail in memory without deleting the key from SharedPreferences.
+        //       On app restart, getLoggedInEmail() read the persistent key from disk and auto-logged the user back in.
+        //    b) In session_prefs.xml:
+        //       - Before login: key 'logged_in_email' does not exist.
+        //       - After login with Remember me: <string name="logged_in_email">user@example.com</string>.
+        //       - After logout (before fix): key 'logged_in_email' remained in XML because logout() didn't remove it.
+        //    c) Root cause fixed in SessionManager.logout() by adding: prefs.edit().remove(KEY_EMAIL).apply();
         btnLogout.setOnClickListener(v -> {
             sessionManager.logout();
             goToLogin();

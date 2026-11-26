@@ -14,4 +14,10 @@ public interface UserRepository {
      * @return true if saved, false if a user with the same email already exists.
      */
     boolean add(User user);
+
+    /** Removes a user by email. */
+    boolean remove(String email);
+
+    /** Clears all stored users. */
+    void clearAll();
 }

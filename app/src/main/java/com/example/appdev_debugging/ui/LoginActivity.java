@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity{
         tvError = findViewById(R.id.tvError);
         Button btnLogin = findViewById(R.id.btnLogin);
         TextView tvGoToRegister = findViewById(R.id.tvGoToRegister);
-        TextView tvDemoHint = findViewById(R.id.tvDemoHint);
+
 
 
 
@@ -102,6 +102,11 @@ public class LoginActivity extends AppCompatActivity{
     //       "Step Into" (F7) to follow the password all the way to where it is checked.
     //       Watch the value of the password variable at each step in the Variables panel.
     //    c) Identify the exact line that breaks it, fix it, and explain WHY it broke.
+    //  ANSWER:
+    //    a) Observed pattern: passwords with only lowercase letters & numbers worked. Passwords with uppercase letters failed.
+    //    b) Line responsible: AuthManager.java -> password.toLowerCase(Locale.ROOT) passed to PasswordHasher.verify().
+    //    c) Explanation: SHA-256 hashing is case-sensitive. Lowercasing candidate password during login converted 'Password123'
+    //       to 'password123', resulting in a hash mismatch with stored 'Password123'. Fixed by removing toLowerCase().
     //
     // TODO(DEBUG #2): Users with capital letters in their email can't log in after registering.
     //  Steps to reproduce (fix DEBUG #1 first so logins can succeed at all):
@@ -117,6 +122,11 @@ public class LoginActivity extends AppCompatActivity{
     //    c) Hint for investigation only: a HashMap compares keys with equals(), and "A".equals("a") is false.
     //    d) Fix it so email matching is case-insensitive everywhere, and add a unit test in
     //       AuthManagerTest that would have caught this bug.
+    //  ANSWER:
+    //    a) Lowercase emails worked normally. Mixed/uppercase emails failed on lookup after registration.
+    //    b) Exact strings compared: Map key was raw 'Juan.DelaCruz@Mail.com' while lookup key was normalized 'juan.delacruz@mail.com'.
+    //       HashMap.get() returned null because string equals() is case-sensitive.
+    //    c & d) Fix: Normalized email keys in InMemoryUserRepository.add() and AuthManager.register(). Added unit tests in AuthManagerTest.java.
     private void attemptLogin() {
         clearErrors();
 
